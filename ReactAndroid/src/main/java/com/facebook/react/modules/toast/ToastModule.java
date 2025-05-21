@@ -7,6 +7,7 @@
 
 package com.facebook.react.modules.toast;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 import com.facebook.fbreact.specs.NativeToastAndroidSpec;
@@ -28,6 +29,7 @@ public class ToastModule extends NativeToastAndroidSpec {
   private static final String GRAVITY_BOTTOM_KEY = "BOTTOM";
   private static final String GRAVITY_CENTER = "CENTER";
   public static final String NAME = "ToastAndroid";
+  private static final String TAG = "ReactNative_ToastModule"; // 添加TAG常量用于日志
 
   public ToastModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -52,12 +54,17 @@ public class ToastModule extends NativeToastAndroidSpec {
   @Override
   public void show(final String message, final double durationDouble) {
     final int duration = (int) durationDouble;
+    
+    // 添加日志输出
+    Log.d(TAG, "ToastAndroid.show 被调用: message=" + message + ", duration=" + duration);
 
     UiThreadUtil.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
             Toast.makeText(getReactApplicationContext(), message, duration).show();
+            // 添加UI线程中的日志
+            Log.d(TAG, "Toast已在UI线程显示");
           }
         });
   }
